@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.soufiane.bankaccountservice.entity.AccountType;
-import java.time.LocalDate;
+import ma.soufiane.bankaccountservice.entity.Customer;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -17,4 +16,5 @@ public class BankAccountResponse {
     private Double balance;
     private String currency;
     private AccountType type;
+    private Customer customer;
 }

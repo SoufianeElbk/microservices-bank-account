@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import ma.soufiane.bankaccountservice.dto.BankAccountRequest;
 import ma.soufiane.bankaccountservice.dto.BankAccountResponse;
 import ma.soufiane.bankaccountservice.entity.BankAccount;
+import ma.soufiane.bankaccountservice.entity.Customer;
 import ma.soufiane.bankaccountservice.mapper.BankAccountMapper;
 import ma.soufiane.bankaccountservice.repository.BankAccountRepository;
+import ma.soufiane.bankaccountservice.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
+    private final CustomerRepository customerRepository;
 
     public Optional<BankAccountResponse> getBankAccountById(String id) {
         return bankAccountRepository.findById(id)
@@ -31,6 +32,13 @@ public class BankAccountService {
 
     public BankAccountResponse saveBankAccount(BankAccountRequest bankAccount) {
         BankAccount bankAccountEntity = BankAccountMapper.toEntity(bankAccount);
+
+        if (bankAccount.getCustomerId() != null) {
+            Customer customer = customerRepository.findById(bankAccount.getCustomerId())
+                    .orElseThrow(() -> new RuntimeException("Customer not found"));
+            bankAccountEntity.setCustomer(customer);
+        }
+
         bankAccountEntity.setCreatedAt(LocalDateTime.now());
         return BankAccountMapper.toResponse(bankAccountRepository.save(bankAccountEntity));
     }

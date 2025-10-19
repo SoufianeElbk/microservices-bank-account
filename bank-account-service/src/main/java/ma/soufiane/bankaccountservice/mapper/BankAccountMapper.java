@@ -41,6 +41,7 @@ public class BankAccountMapper {
         bankAccountResponse.setBalance(bankAccount.getBalance());
         bankAccountResponse.setCurrency(bankAccount.getCurrency());
         bankAccountResponse.setType(bankAccount.getType());
+        bankAccountResponse.setCustomer(bankAccount.getCustomer());
         return bankAccountResponse;
     }
 }
